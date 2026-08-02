@@ -1,0 +1,7 @@
+{
+  "nav": { "home": "Home", "meetings": "Meetings", "calendar": "Calendar", "team": "Team Directory", "chat": "Chat", "files": "Files", "recordings": "Recordings", "notifications": "Notifications", "analytics": "Analytics", "reports": "Reports", "security": "Security", "settings": "Settings", "dashboards": "Dashboards" },
+  "meeting": { "new": "New Meeting", "join": "Join Meeting", "schedule": "Schedule Meeting", "start": "Start Meeting", "end": "End Meeting", "lobby": "Meeting Lobby", "room": "Meeting Room", "controls": { "mute": "Mute", "unmute": "Unmute", "camera": "Camera", "screenShare": "Share Screen", "chat": "Chat", "participants": "Participants", "reactions": "Reactions", "record": "Record", "leave": "Leave Meeting" } },
+  "auth": { "login": "Sign In", "signup": "Sign Up", "logout": "Sign Out", "forgotPassword": "Forgot Password", "resetPassword": "Reset Password", "otp": "Verify OTP", "twoFactor": "Two-Factor Auth" },
+  "common": { "search": "Search", "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "create": "Create", "export": "Export", "import": "Import", "loading": "Loading...", "noResults": "No results found", "viewAll": "View All", "markAllRead": "Mark all read", "clearAll": "Clear all" },
+  "landing": { "hero": { "title": "Where Teams Connect and Collaborate", "subtitle": "The premier video conferencing platform for modern teams.", "cta": "Start Free Trial", "demo": "Watch Demo" }, "features": "Features", "pricing": "Pricing", "contact": "Contact", "newsletter": "Stay in the loop" }
+}

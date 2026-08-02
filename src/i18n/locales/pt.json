@@ -1,0 +1,7 @@
+{
+  "nav": { "home": "Início", "meetings": "Reuniões", "calendar": "Calendário", "team": "Diretório", "chat": "Chat", "files": "Arquivos", "recordings": "Gravações", "notifications": "Notificações", "analytics": "Analíticas", "reports": "Relatórios", "security": "Segurança", "settings": "Configurações", "dashboards": "Painéis" },
+  "meeting": { "new": "Nova Reunião", "join": "Entrar", "schedule": "Agendar", "start": "Iniciar", "end": "Encerrar", "lobby": "Sala de Espera", "room": "Sala de Reunião", "controls": { "mute": "Silenciar", "unmute": "Ativar Som", "camera": "Câmera", "screenShare": "Compartilhar Tela", "chat": "Chat", "participants": "Participantes", "reactions": "Reações", "record": "Gravar", "leave": "Sair" } },
+  "auth": { "login": "Entrar", "signup": "Cadastrar", "logout": "Sair", "forgotPassword": "Esqueci a Senha", "resetPassword": "Redefinir Senha", "otp": "Verificar OTP", "twoFactor": "Autenticação 2FA" },
+  "common": { "search": "Pesquisar", "save": "Salvar", "cancel": "Cancelar", "delete": "Excluir", "edit": "Editar", "create": "Criar", "export": "Exportar", "import": "Importar", "loading": "Carregando...", "noResults": "Nenhum resultado", "viewAll": "Ver Tudo", "markAllRead": "Marcar tudo lido", "clearAll": "Limpar tudo" },
+  "landing": { "hero": { "title": "Onde os Times se Conectam e Colaboram", "subtitle": "A plataforma de videoconferência premium para equipes modernas.", "cta": "Teste Grátis", "demo": "Ver Demonstração" }, "features": "Recursos", "pricing": "Preços", "contact": "Contato", "newsletter": "Fique por dentro" }
+}

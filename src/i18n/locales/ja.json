@@ -1,0 +1,7 @@
+{
+  "nav": { "home": "ホーム", "meetings": "ミーティング", "calendar": "カレンダー", "team": "チーム", "chat": "チャット", "files": "ファイル", "recordings": "録画", "notifications": "通知", "analytics": "分析", "reports": "レポート", "security": "セキュリティ", "settings": "設定", "dashboards": "ダッシュボード" },
+  "meeting": { "new": "新規ミーティング", "join": "参加", "schedule": "予定", "start": "開始", "end": "終了", "lobby": "ロビー", "room": "ミーティングルーム", "controls": { "mute": "ミュート", "unmute": "ミュート解除", "camera": "カメラ", "screenShare": "画面共有", "chat": "チャット", "participants": "参加者", "reactions": "リアクション", "record": "録画", "leave": "退出" } },
+  "auth": { "login": "ログイン", "signup": "登録", "logout": "ログアウト", "forgotPassword": "パスワードをお忘れの方", "resetPassword": "パスワードリセット", "otp": "OTP認証", "twoFactor": "2段階認証" },
+  "common": { "search": "検索", "save": "保存", "cancel": "キャンセル", "delete": "削除", "edit": "編集", "create": "作成", "export": "エクスポート", "import": "インポート", "loading": "読み込み中...", "noResults": "結果が見つかりません", "viewAll": "すべて表示", "markAllRead": "すべて既読", "clearAll": "すべてクリア" },
+  "landing": { "hero": { "title": "チームがつながり協力する場所", "subtitle": "現代のチームのためのプレミアムビデオ会議プラットフォーム。", "cta": "無料トライアル", "demo": "デモを見る" }, "features": "機能", "pricing": "料金", "contact": "お問い合わせ", "newsletter": "最新情報を受け取る" }
+}

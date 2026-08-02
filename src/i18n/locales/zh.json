@@ -1,0 +1,7 @@
+{
+  "nav": { "home": "首页", "meetings": "会议", "calendar": "日历", "team": "团队目录", "chat": "聊天", "files": "文件", "recordings": "录制", "notifications": "通知", "analytics": "分析", "reports": "报告", "security": "安全", "settings": "设置", "dashboards": "仪表盘" },
+  "meeting": { "new": "新会议", "join": "加入", "schedule": "安排", "start": "开始", "end": "结束", "lobby": "等候室", "room": "会议室", "controls": { "mute": "静音", "unmute": "取消静音", "camera": "摄像头", "screenShare": "共享屏幕", "chat": "聊天", "participants": "参与者", "reactions": "反应", "record": "录制", "leave": "离开" } },
+  "auth": { "login": "登录", "signup": "注册", "logout": "退出", "forgotPassword": "忘记密码", "resetPassword": "重置密码", "otp": "验证OTP", "twoFactor": "双因素认证" },
+  "common": { "search": "搜索", "save": "保存", "cancel": "取消", "delete": "删除", "edit": "编辑", "create": "创建", "export": "导出", "import": "导入", "loading": "加载中...", "noResults": "未找到结果", "viewAll": "查看全部", "markAllRead": "全部标为已读", "clearAll": "清除全部" },
+  "landing": { "hero": { "title": "团队连接与协作的平台", "subtitle": "现代团队首选的高级视频会议平台。", "cta": "免费试用", "demo": "观看演示" }, "features": "功能", "pricing": "价格", "contact": "联系我们", "newsletter": "获取最新资讯" }
+}
