@@ -1,5 +1,6 @@
 require('dotenv').config();
 const http = require('http');
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -35,6 +36,14 @@ app.use('/api/meetings', meetingRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/recordings', recordingRoutes);
 app.use('/api/messages', messageRoutes);
+
+const DIST_DIR = path.join(__dirname, '..', 'dist');
+app.use(express.static(DIST_DIR));
+app.get(/^\/(?!api\/).*/, (req, res, next) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'), (err) => {
+    if (err) next(err);
+  });
+});
 
 app.use(notFound);
 app.use(errorHandler);
