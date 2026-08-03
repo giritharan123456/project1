@@ -18,9 +18,13 @@ async function testConnection() {
     const conn = await pool.getConnection();
     console.log('MySQL connected successfully');
     conn.release();
+    return true;
   } catch (err) {
-    console.error('MySQL connection failed:', err.message);
-    process.exit(1);
+    console.error(
+      `MySQL connection failed (${err.message}). ` +
+        'Server will keep running; database endpoints return errors until MySQL is reachable.'
+    );
+    return false;
   }
 }
 

@@ -15,6 +15,9 @@ dist-ssr
 # Backend local env (never commit real credentials)
 backend/.env
 
+# Local isolated MySQL instance config (never commit)
+.my.cnf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
