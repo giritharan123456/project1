@@ -9,13 +9,14 @@ services:
   - type: web
     name: adzconnect-backend
     runtime: node
+    repo: https://github.com/giritharan123456/project1
     rootDir: backend
     plan: free
     region: oregon
     branch: main
     healthCheckPath: /api/health
     buildCommand: npm ci
-    preDeployCommand: npm run migrate
+    initialDeployHook: npm run migrate
     startCommand: npm start
     autoDeployTrigger: commit
     envVars:
@@ -47,6 +48,7 @@ services:
   - type: web
     name: adzconnect-frontend
     runtime: node
+    repo: https://github.com/giritharan123456/project1
     rootDir: .
     plan: free
     region: oregon
