@@ -1,0 +1,17 @@
+[
+  { "id": "msg1", "from": "u2", "to": "u7", "text": "Hey Michael, can you review the PR I just submitted?", "timestamp": "2026-07-30T09:15:00Z", "type": "direct", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg2", "from": "u7", "to": "u2", "text": "Sure, let me take a look now.", "timestamp": "2026-07-30T09:16:00Z", "type": "direct", "read": true, "pinned": false, "replyTo": "msg1" },
+  { "id": "msg3", "from": "u2", "to": "u7", "text": "Great, thanks! The PR is about the new video grid component.", "timestamp": "2026-07-30T09:17:00Z", "type": "direct", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg4", "from": "u6", "to": "u2", "text": "The standup meeting link is not working for me", "timestamp": "2026-07-30T08:45:00Z", "type": "direct", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg5", "from": "u2", "to": "u6", "text": "Let me resend the invite.", "timestamp": "2026-07-30T08:46:00Z", "type": "direct", "read": true, "pinned": false, "replyTo": "msg4" },
+  { "id": "msg6", "from": "u4", "to": "u10", "text": "The blog post draft is ready for review", "timestamp": "2026-07-30T10:00:00Z", "type": "direct", "read": false, "pinned": false, "replyTo": null },
+  { "id": "msg7", "from": "u3", "to": "u1", "text": "New hire orientation is scheduled for next Monday", "timestamp": "2026-07-30T09:30:00Z", "type": "direct", "read": false, "pinned": false, "replyTo": null },
+  { "id": "msg8", "from": "u1", "to": "u3", "text": "Perfect, please send the agenda to all new hires.", "timestamp": "2026-07-30T09:31:00Z", "type": "direct", "read": false, "pinned": false, "replyTo": "msg7" },
+  { "id": "msg9", "from": "u6", "to": "engineering", "text": "Deployment to staging is complete", "timestamp": "2026-07-30T11:00:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg10", "from": "u7", "to": "engineering", "text": "Great! I'll start testing the new features.", "timestamp": "2026-07-30T11:05:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": "msg9" },
+  { "id": "msg11", "from": "u4", "to": "marketing", "text": "New campaign metrics are looking great this quarter!", "timestamp": "2026-07-30T12:00:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg12", "from": "u10", "to": "marketing", "text": "The LinkedIn ads are performing 40% above target", "timestamp": "2026-07-30T12:05:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": null },
+  { "id": "msg13", "from": "u9", "to": "sales", "text": "Closed a deal with Acme Corp worth $50k!", "timestamp": "2026-07-30T14:00:00Z", "type": "channel", "read": true, "pinned": true, "replyTo": null },
+  { "id": "msg14", "from": "u5", "to": "sales", "text": "Amazing work Robert! 🎉", "timestamp": "2026-07-30T14:05:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": "msg13" },
+  { "id": "msg15", "from": "u1", "to": "general", "text": "Great quarter everyone! Keep up the amazing work!", "timestamp": "2026-07-30T15:00:00Z", "type": "channel", "read": true, "pinned": false, "replyTo": null }
+]

@@ -1,0 +1,11 @@
+[
+  { "id": "n1", "type": "meeting_reminder", "priority": "urgent", "title": "Meeting in 15 minutes", "description": "Weekly Engineering Standup starts soon", "time": "2026-07-30T08:45:00Z", "read": false, "userId": "u7", "link": "/meeting/m1" },
+  { "id": "n2", "type": "meeting_invitation", "priority": "info", "title": "Meeting Invitation", "description": "You've been invited to Product Strategy Q3 Planning", "time": "2026-07-29T14:00:00Z", "read": false, "userId": "u7", "link": "/meeting/m2" },
+  { "id": "n3", "type": "recording_ready", "priority": "info", "title": "Recording Available", "description": "Sales Pipeline Review recording is ready", "time": "2026-07-29T16:00:00Z", "read": true, "userId": "u9", "link": "/recordings" },
+  { "id": "n4", "type": "file_shared", "priority": "info", "title": "New file shared", "description": "Sarah shared 'Q3 Roadmap.pdf' in Engineering channel", "time": "2026-07-30T10:30:00Z", "read": false, "userId": "u7", "link": "/files" },
+  { "id": "n5", "type": "chat_notification", "priority": "info", "title": "New message from Emily", "description": "Emily: The blog post draft is ready for review", "time": "2026-07-30T10:00:00Z", "read": false, "userId": "u10", "link": "/chat" },
+  { "id": "n6", "type": "missed_meeting", "priority": "urgent", "title": "Missed Meeting", "description": "You missed Design Review: New Dashboard", "time": "2026-07-29T11:00:00Z", "read": true, "userId": "u7", "link": "/meeting/m3" },
+  { "id": "n7", "type": "system", "priority": "warning", "title": "System Update", "description": "New features available in Connectly v3.2", "time": "2026-07-30T08:00:00Z", "read": false, "userId": "u7", "link": "/settings" },
+  { "id": "n8", "type": "announcement", "priority": "warning", "title": "Company Announcement", "description": "Q3 Company Retreat announced for September", "time": "2026-07-28T09:00:00Z", "read": false, "userId": "u7", "link": "/announcements" },
+  { "id": "n9", "type": "join_alert", "priority": "info", "title": "User Joined", "description": "Lisa Thompson has joined the meeting", "time": "2026-07-30T09:02:00Z", "read": false, "userId": "u2", "link": "/meeting/m1" }
+]
