@@ -7,24 +7,35 @@ SOCKET=/tmp/mysqld.sock
 PIDFILE=/tmp/mysqld.pid
 
 mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld 2>/dev/null || true
 
+echo "[db] datadir check: $(ls -la $MYSQL_DIR 2>&1 | head -5)"
 if [ ! -d "$MYSQL_DIR/mysql" ]; then
   echo "[db] initializing data directory"
-  mariadb-install-db --no-defaults --user=mysql --datadir="$MYSQL_DIR" --auth-root-authentication-method=normal --skip-test-db >/tmp/initdb.log 2>&1 || true
+  mariadb-install-db --no-defaults --user=mysql --datadir="$MYSQL_DIR" --auth-root-authentication-method=normal --skip-test-db >/tmp/initdb.log 2>&1
+  echo "[db] mariadb-install-db exit=$?"
 fi
 
 echo "[db] starting mariadbd"
-mariadbd --user=mysql --datadir="$MYSQL_DIR" --socket="$SOCKET" --pid-file="$PIDFILE" --port=3306 --bind-address=127.0.0.1 --skip-networking=0 --log-error=/tmp/mysqld.err --innodb-buffer-pool-size=64M --performance_schema=OFF --skip-log-bin >/tmp/mysqld.log 2>&1 &
+mariadbd --user=mysql --datadir="$MYSQL_DIR" --socket="$SOCKET" --pid-file="$PIDFILE" --port=3306 --bind-address=127.0.0.1 --skip-networking=0 --innodb-use-native-aio=0 --innodb-buffer-pool-size=64M --performance_schema=OFF --skip-log-bin >/tmp/mysqld.log 2>&1 &
 MARIADB_PID=$!
 
 for i in $(seq 1 90); do
   if mariadb-admin --socket="$SOCKET" -uroot ping >/dev/null 2>&1; then
+    echo "[db] mariadbd is up (${i}s)"
     break
   fi
   if ! kill -0 "$MARIADB_PID" 2>/dev/null; then
-    echo "[db] mariadbd exited early:"
-    tail -n 40 /tmp/mysqld.err 2>/dev/null || true
-    tail -n 40 /tmp/mysqld.log 2>/dev/null || true
+    wait "$MARIADB_PID" 2>/dev/null
+    echo "[db] mariadbd exited early with code $?"
+    echo "----- full mysqld.log -----"
+    cat /tmp/mysqld.log
+    echo "----- ulimit -a -----"
+    ulimit -a
+    echo "----- meminfo (grep Mem) -----"
+    grep -E 'MemTotal|MemAvailable' /proc/meminfo || true
+    echo "----- cgroup memory.max -----"
+    cat /sys/fs/cgroup/memory.max 2>/dev/null || true
     exit 1
   fi
   sleep 1
