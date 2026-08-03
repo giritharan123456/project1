@@ -97,15 +97,23 @@ function serveStatic(req, res) {
   });
 }
 
+function backendHostHeader() {
+  const isDefaultPort = BACKEND.secure ? BACKEND.port === 443 : BACKEND.port === 80;
+  return isDefaultPort ? BACKEND.host : `${BACKEND.host}:${BACKEND.port}`;
+}
+
 function proxyHttp(req, res) {
   const transport = BACKEND.secure ? https : http;
+  const headers = { ...req.headers };
+  delete headers.host;
+  delete headers.connection;
   const proxyReq = transport.request(
     {
       host: BACKEND.host,
       port: BACKEND.port,
       path: req.url,
       method: req.method,
-      headers: req.headers,
+      headers,
       servername: BACKEND.secure ? BACKEND.host : undefined,
     },
     (proxyRes) => {
@@ -149,12 +157,13 @@ function proxyWebSocket(req, socket, head) {
 
   const backendSocket = connect((sock) => {
     const headers = Object.entries(req.headers)
-      .filter(([key]) => key.toLowerCase() !== 'connection')
+      .filter(([key]) => !['connection', 'host'].includes(key.toLowerCase()))
       .map(([key, value]) => `${key}: ${value}`)
       .join('\r\n');
 
     sock.write(
       `${req.method} ${req.url} HTTP/${req.httpVersion}\r\n` +
+        `Host: ${backendHostHeader()}\r\n` +
         `${headers}\r\n` +
         'Connection: Upgrade\r\n' +
         'Upgrade: websocket\r\n\r\n'
