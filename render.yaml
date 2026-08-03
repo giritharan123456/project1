@@ -1,23 +1,23 @@
-# AdzConnect on Render
-# - adzconnect-backend:  Node/Express + MySQL + WebSocket API
-# - adzconnect-frontend: serves the built SPA and proxies /api + /ws to the backend
+# AdzConnect on Render - single service, single URL.
+# The Express backend serves the built frontend (../dist) itself, so the API,
+# WebSocket, and SPA all live on one service: https://adzconnect.onrender.com
 #
-# MySQL is an EXTERNAL free instance. During Blueprint setup, Render prompts for
-# DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME and CLIENT_URL (frontend URL).
+# MySQL is an EXTERNAL free instance. After creation, set DB_HOST, DB_PORT,
+# DB_USER, DB_PASSWORD, DB_NAME on the service and run `npm run migrate`
+# (or `npm run seed`) as a one-off job.
 
 services:
   - type: web
-    name: adzconnect-backend
+    name: adzconnect
     runtime: node
     repo: https://github.com/giritharan123456/project1
-    rootDir: backend
+    rootDir: .
     plan: free
     region: oregon
     branch: main
     healthCheckPath: /api/health
-    buildCommand: npm ci
-    initialDeployHook: npm run migrate
-    startCommand: npm start
+    buildCommand: npm ci --include=dev && npm run build && cd backend && npm ci
+    startCommand: node backend/server.js
     autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
@@ -44,24 +44,3 @@ services:
         value: 7d
       - key: OTP_EXPIRES_MINUTES
         value: 5
-
-  - type: web
-    name: adzconnect-frontend
-    runtime: node
-    repo: https://github.com/giritharan123456/project1
-    rootDir: .
-    plan: free
-    region: oregon
-    branch: main
-    healthCheckPath: /
-    buildCommand: npm ci --include=dev && npm run build
-    startCommand: node deploy/staticServer.cjs
-    autoDeployTrigger: commit
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: BACKEND_INTERNAL_URL
-        fromService:
-          name: adzconnect-backend
-          type: web
-          property: hostport
