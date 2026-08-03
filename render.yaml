@@ -1,10 +1,12 @@
-# AdzConnect on Render - single service, single URL.
+# AdzConnect on Render - single service, single URL, zero external dependencies.
 # The Express backend serves the built frontend (../dist) itself, so the API,
 # WebSocket, and SPA all live on one service: https://adzconnect.onrender.com
 #
-# MySQL is an EXTERNAL free instance. After creation, set DB_HOST, DB_PORT,
-# DB_USER, DB_PASSWORD, DB_NAME on the service and run `npm run migrate`
-# (or `npm run seed`) as a one-off job.
+# A MariaDB server is installed at build time and initialized + seeded at boot
+# (see deploy/install-deps.sh and deploy/start.sh). This keeps everything
+# self-contained on the free tier. Note: free-tier instances sleep after idle
+# and get a fresh ephemeral disk on wake, so the DB is re-initialized and
+# re-seeded on each cold start (demo data only).
 
 services:
   - type: web
@@ -16,8 +18,8 @@ services:
     region: oregon
     branch: main
     healthCheckPath: /api/health
-    buildCommand: npm ci --include=dev && npm run build && cd backend && npm ci
-    startCommand: node backend/server.js
+    buildCommand: bash deploy/install-deps.sh && npm ci --include=dev && npm run build && cd backend && npm ci
+    startCommand: bash deploy/start.sh
     autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
@@ -25,15 +27,15 @@ services:
       - key: CLIENT_URL
         sync: false
       - key: DB_HOST
-        sync: false
+        value: 127.0.0.1
       - key: DB_PORT
-        sync: false
+        value: "3306"
       - key: DB_USER
-        sync: false
+        value: connectly
       - key: DB_PASSWORD
         sync: false
       - key: DB_NAME
-        sync: false
+        value: connectly
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
