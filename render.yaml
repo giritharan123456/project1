@@ -54,7 +54,7 @@ services:
     region: oregon
     branch: main
     healthCheckPath: /
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node deploy/staticServer.cjs
     autoDeployTrigger: commit
     envVars:
