@@ -8,6 +8,12 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.__ENV__ = {
+        API_URL: '/api',
+        REALTIME_URL: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws',
+      };
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

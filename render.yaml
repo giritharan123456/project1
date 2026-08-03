@@ -1,0 +1,65 @@
+# AdzConnect on Render
+# - adzconnect-backend:  Node/Express + MySQL + WebSocket API
+# - adzconnect-frontend: serves the built SPA and proxies /api + /ws to the backend
+#
+# MySQL is an EXTERNAL free instance. During Blueprint setup, Render prompts for
+# DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME and CLIENT_URL (frontend URL).
+
+services:
+  - type: web
+    name: adzconnect-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /api/health
+    buildCommand: npm ci
+    preDeployCommand: npm run migrate
+    startCommand: npm start
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: OTP_EXPIRES_MINUTES
+        value: 5
+
+  - type: web
+    name: adzconnect-frontend
+    runtime: node
+    rootDir: .
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /
+    buildCommand: npm ci && npm run build
+    startCommand: node deploy/staticServer.cjs
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BACKEND_INTERNAL_URL
+        fromService:
+          name: adzconnect-backend
+          type: web
+          property: hostport
