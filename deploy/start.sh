@@ -4,14 +4,17 @@ set -euo pipefail
 DB_PASSWORD="${DB_PASSWORD:-ConnectlyLocal@123}"
 MYSQL_DIR="${MYSQL_DIR:-/var/lib/mysql}"
 SOCKET=/tmp/mysqld.sock
+PIDFILE=/tmp/mysqld.pid
+
+mkdir -p /run/mysqld
 
 if [ ! -d "$MYSQL_DIR/mysql" ]; then
   echo "[db] initializing data directory"
-  mariadb-install-db --user=root --datadir="$MYSQL_DIR" --auth-root-authentication-method=normal --skip-test-db >/tmp/initdb.log 2>&1 || true
+  mariadb-install-db --no-defaults --user=mysql --datadir="$MYSQL_DIR" --auth-root-authentication-method=normal --skip-test-db >/tmp/initdb.log 2>&1 || true
 fi
 
 echo "[db] starting mariadbd"
-mariadbd --user=root --datadir="$MYSQL_DIR" --socket="$SOCKET" --port=3306 --bind-address=127.0.0.1 --skip-networking=0 --innodb-buffer-pool-size=64M --performance_schema=OFF --skip-log-bin >/tmp/mysqld.log 2>&1 &
+mariadbd --user=mysql --datadir="$MYSQL_DIR" --socket="$SOCKET" --pid-file="$PIDFILE" --port=3306 --bind-address=127.0.0.1 --skip-networking=0 --log-error=/tmp/mysqld.err --innodb-buffer-pool-size=64M --performance_schema=OFF --skip-log-bin >/tmp/mysqld.log 2>&1 &
 MARIADB_PID=$!
 
 for i in $(seq 1 90); do
@@ -20,7 +23,8 @@ for i in $(seq 1 90); do
   fi
   if ! kill -0 "$MARIADB_PID" 2>/dev/null; then
     echo "[db] mariadbd exited early:"
-    tail -n 40 /tmp/mysqld.log
+    tail -n 40 /tmp/mysqld.err 2>/dev/null || true
+    tail -n 40 /tmp/mysqld.log 2>/dev/null || true
     exit 1
   fi
   sleep 1

@@ -2,24 +2,25 @@
 # The Express backend serves the built frontend (../dist) itself, so the API,
 # WebSocket, and SPA all live on one service: https://adzconnect.onrender.com
 #
-# A MariaDB server is installed at build time and initialized + seeded at boot
-# (see deploy/install-deps.sh and deploy/start.sh). This keeps everything
-# self-contained on the free tier. Note: free-tier instances sleep after idle
-# and get a fresh ephemeral disk on wake, so the DB is re-initialized and
-# re-seeded on each cold start (demo data only).
+# A Dockerfile service is used because Render's native node build sandbox has a
+# read-only filesystem (apt-get fails there). Inside the Docker build, MariaDB
+# is installed normally; deploy/start.sh initializes + seeds it at boot.
+# Note: free-tier instances sleep after idle and get a fresh ephemeral disk on
+# wake, so the DB is re-initialized and re-seeded on each cold start (demo only).
 
 services:
   - type: web
     name: adzconnect
-    runtime: node
+    runtime: docker
     repo: https://github.com/giritharan123456/project1
     rootDir: .
     plan: free
     region: oregon
     branch: main
     healthCheckPath: /api/health
-    buildCommand: bash deploy/install-deps.sh && npm ci --include=dev && npm run build && cd backend && npm ci
-    startCommand: bash deploy/start.sh
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: bash deploy/start.sh
     autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
