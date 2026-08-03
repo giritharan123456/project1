@@ -2,6 +2,8 @@
 // Serves the built SPA from ../dist, falls back to index.html for client routes,
 // and proxies /api (HTTP) and /ws (WebSocket) to the backend service. Zero deps.
 const http = require('http');
+const https = require('https');
+const tls = require('tls');
 const fs = require('fs');
 const path = require('path');
 const net = require('net');
@@ -10,8 +12,19 @@ const PORT = process.env.PORT || 3000;
 const DIST_DIR = path.join(__dirname, '..', 'dist');
 const BACKEND_INTERNAL_URL = process.env.BACKEND_INTERNAL_URL || 'localhost:5000';
 
-const [BACKEND_HOST, BACKEND_PORT_STR] = BACKEND_INTERNAL_URL.split(':');
-const BACKEND_PORT = Number(BACKEND_PORT_STR) || 5000;
+function parseBackendUrl(url) {
+  const httpsMatch = url.match(/^https:\/\/([^/:]+)(?::(\d+))?/);
+  if (httpsMatch) {
+    return { host: httpsMatch[1], port: Number(httpsMatch[2]) || 443, secure: true };
+  }
+  const hostPortMatch = url.match(/^([^:/]+):(\d+)$/);
+  if (hostPortMatch) {
+    return { host: hostPortMatch[1], port: Number(hostPortMatch[2]), secure: false };
+  }
+  return { host: url, port: 5000, secure: false };
+}
+
+const BACKEND = parseBackendUrl(BACKEND_INTERNAL_URL);
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -85,13 +98,15 @@ function serveStatic(req, res) {
 }
 
 function proxyHttp(req, res) {
-  const proxyReq = http.request(
+  const transport = BACKEND.secure ? https : http;
+  const proxyReq = transport.request(
     {
-      host: BACKEND_HOST,
-      port: BACKEND_PORT,
+      host: BACKEND.host,
+      port: BACKEND.port,
       path: req.url,
       method: req.method,
       headers: req.headers,
+      servername: BACKEND.secure ? BACKEND.host : undefined,
     },
     (proxyRes) => {
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
@@ -112,19 +127,39 @@ function proxyHttp(req, res) {
 }
 
 function proxyWebSocket(req, socket, head) {
-  const backendSocket = net.connect(BACKEND_PORT, BACKEND_HOST, () => {
+  const connect = (cb) => {
+    if (BACKEND.secure) {
+      const tlsSocket = tls.connect(
+        { host: BACKEND.host, port: BACKEND.port, servername: BACKEND.host, ALPNProtocols: ['http/1.1'] },
+        () => cb(tlsSocket)
+      );
+      tlsSocket.on('error', (err) => {
+        console.error('[ws-proxy] backend TLS connection failed:', err.message);
+        socket.destroy();
+      });
+      return tlsSocket;
+    }
+    const netSocket = net.connect(BACKEND.port, BACKEND.host, () => cb(netSocket));
+    netSocket.on('error', (err) => {
+      console.error('[ws-proxy] backend connection failed:', err.message);
+      socket.destroy();
+    });
+    return netSocket;
+  };
+
+  const backendSocket = connect((sock) => {
     const headers = Object.entries(req.headers)
       .filter(([key]) => key.toLowerCase() !== 'connection')
       .map(([key, value]) => `${key}: ${value}`)
       .join('\r\n');
 
-    backendSocket.write(
+    sock.write(
       `${req.method} ${req.url} HTTP/${req.httpVersion}\r\n` +
         `${headers}\r\n` +
         'Connection: Upgrade\r\n' +
         'Upgrade: websocket\r\n\r\n'
     );
-    if (head && head.length) backendSocket.write(head);
+    if (head && head.length) sock.write(head);
   });
 
   backendSocket.on('error', (err) => {
